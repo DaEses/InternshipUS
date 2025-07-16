@@ -5,6 +5,7 @@ export default function Navbar() {
   const links = [
     { name: 'Home', path: '/' },
     { name: 'Resume & Job Matcher', path: '/scan' },
+    { name: 'Job Matcher', path: '/match' },
     { name: 'Profile', path: '/profile' },
   ];
 

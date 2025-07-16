@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import '../Home.css';
 
 function downloadResume(resume) {
   const content = `Resume: ${resume.name}\nStatus: ${resume.status}\nScore: ${resume.score}/100\nLast Updated: ${resume.lastUpdated}\nKeywords: ${resume.keywords.join(', ')}\n`;
@@ -14,6 +16,15 @@ function downloadResume(resume) {
     URL.revokeObjectURL(url);
   }, 100);
 }
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.15, duration: 0.7, type: 'spring', stiffness: 60 }
+  })
+};
 
 export default function Profile() {
   // Load/save profile from localStorage
@@ -258,264 +269,267 @@ export default function Profile() {
   };
 
   return (
-    <div className="js-profile">
-      <div className="js-profile-container">
-        <div className="js-profile-header">
-          <h2>Your Profile</h2>
-          <p>Manage your personal brand, preferences, and job search data.</p>
-        </div>
-
-        <div className="js-profile-content">
-          {/* Profile Sidebar */}
-          <div className="js-profile-sidebar">
-            <div className="js-profile-avatar">
-              {userProfile.name.split(' ').map(n => n[0]).join('')}
+    <div className="js-home teal-home">
+      {/* Hero Section */}
+      <motion.section className="teal-hero" initial="hidden" animate="visible" variants={fadeInUp}>
+        <motion.div className="teal-hero-content" variants={fadeInUp} custom={1}>
+          <motion.h1 variants={fadeInUp} custom={1}>Your Profile</motion.h1>
+          <motion.p variants={fadeInUp} custom={2}>Manage your personal brand, preferences, and job search data.</motion.p>
+        </motion.div>
+        <motion.div className="teal-hero-image" variants={fadeInUp} custom={2}>
+          <img src="https://placehold.co/400x260?text=Profile" alt="Profile" />
+        </motion.div>
+      </motion.section>
+      <div className="js-profile-container" style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1rem' }}>
+        {/* Profile Sidebar */}
+        <div className="js-profile-sidebar">
+          <div className="js-profile-avatar">
+            {userProfile.name.split(' ').map(n => n[0]).join('')}
+          </div>
+          <div className="js-profile-name">{userProfile.name}</div>
+          <div className="js-profile-title">{userProfile.title}</div>
+          
+          <div className="js-profile-stats">
+            <div className="js-stat-item">
+              <div className="js-stat-number">{userProfile.stats.resumesScanned}</div>
+              <div className="js-stat-label">Resumes Scanned</div>
             </div>
-            <div className="js-profile-name">{userProfile.name}</div>
-            <div className="js-profile-title">{userProfile.title}</div>
-            
-            <div className="js-profile-stats">
-              <div className="js-stat-item">
-                <div className="js-stat-number">{userProfile.stats.resumesScanned}</div>
-                <div className="js-stat-label">Resumes Scanned</div>
-              </div>
-              <div className="js-stat-item">
-                <div className="js-stat-number">{userProfile.stats.jobsMatched}</div>
-                <div className="js-stat-label">Jobs Matched</div>
-              </div>
-              <div className="js-stat-item">
-                <div className="js-stat-number">{userProfile.stats.applicationsSubmitted}</div>
-                <div className="js-stat-label">Applications</div>
-              </div>
-              <div className="js-stat-item">
-                <div className="js-stat-number">{userProfile.stats.interviewsScheduled}</div>
-                <div className="js-stat-label">Interviews</div>
-              </div>
+            <div className="js-stat-item">
+              <div className="js-stat-number">{userProfile.stats.jobsMatched}</div>
+              <div className="js-stat-label">Jobs Matched</div>
             </div>
-
-            <div style={{ marginTop: '2rem' }}>
-              <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#1a202c', marginBottom: '1rem' }}>Contact Info</h4>
-              <div style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: '1.6' }}>
-                <div>📧 {userProfile.email}</div>
-                <div>📱 {userProfile.phone}</div>
-                <div>📍 {userProfile.location}</div>
-              </div>
+            <div className="js-stat-item">
+              <div className="js-stat-number">{userProfile.stats.applicationsSubmitted}</div>
+              <div className="js-stat-label">Applications</div>
+            </div>
+            <div className="js-stat-item">
+              <div className="js-stat-number">{userProfile.stats.interviewsScheduled}</div>
+              <div className="js-stat-label">Interviews</div>
             </div>
           </div>
 
-          {/* Profile Main Content */}
-          <div className="js-profile-main">
-            {/* Skills */}
-            <div style={{ marginBottom: '2rem' }}>
-              <h3 className="js-section-title">Skills</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
-                {userProfile.skills.map(skill => (
-                  <span key={skill} className="js-job-tag">
-                    {skill} <button onClick={() => removeSkill(skill)} style={{ marginLeft: 4, color: '#dc2626', background: 'none', border: 'none', cursor: 'pointer' }}>×</button>
-                  </span>
-                ))}
-              </div>
-              <input value={newSkill} onChange={e => setNewSkill(e.target.value)} placeholder="Add skill" style={{ padding: '0.5rem', borderRadius: 6, border: '1px solid #e2e8f0', marginRight: 8 }} />
-              <button className="js-action-button primary" onClick={addSkill}>Add</button>
+          <div style={{ marginTop: '2rem' }}>
+            <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#1a202c', marginBottom: '1rem' }}>Contact Info</h4>
+            <div style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: '1.6' }}>
+              <div>📧 {userProfile.email}</div>
+              <div>📱 {userProfile.phone}</div>
+              <div>📍 {userProfile.location}</div>
             </div>
+          </div>
+        </div>
 
-            {/* Resumes Section */}
-            <div style={{ marginBottom: '3rem' }}>
-              <h3 className="js-section-title">Your Resumes</h3>
-              {userProfile.resumes.map(resume => (
-                <div key={resume.id} className="js-resume-item">
-                  <div className="js-resume-info">
-                    <h4>{resume.name}</h4>
-                    <p>Last updated: {resume.lastUpdated} • Score: {resume.score}/100 • Status: {resume.status}</p>
-                    <div style={{ color: '#64748b', fontSize: '0.85rem', marginTop: 4 }}>Keywords: {resume.keywords.join(', ')}</div>
-                  </div>
-                  <div className="js-resume-actions">
-                    <button 
-                      className="js-action-button primary"
-                      onClick={() => openEditResume(resume)}
-                    >
-                      Edit
-                    </button>
-                    <button 
-                      className="js-action-button secondary"
-                      onClick={() => scanResume(resume)}
-                    >
-                      Scan
-                    </button>
-                    <button 
-                      className="js-action-button secondary"
-                      onClick={() => downloadResume(resume)}
-                    >
-                      Download
-                    </button>
-                    <button 
-                      className="js-action-button secondary"
-                      style={{ color: '#dc2626', borderColor: '#dc2626' }}
-                      onClick={() => deleteResume(resume.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-              <button 
-                className="js-action-button primary"
-                style={{ marginTop: '1rem' }}
-                onClick={openAddResume}
-              >
-                + Add New Resume
-              </button>
-              {/* Resume Modal/Form */}
-              {showResumeForm && (
-                <div style={{ background: '#fff', border: '2px solid #2563eb', borderRadius: 12, padding: 24, marginTop: 16, boxShadow: '0 4px 16px #2563eb22' }}>
-                  <h4 style={{ color: '#2563eb', marginBottom: 12 }}>{editingResume ? 'Edit Resume' : 'Add Resume'}</h4>
-                  <input name="name" value={resumeForm.name} onChange={e => setResumeForm({ ...resumeForm, name: e.target.value })} placeholder="Resume Name" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
-                  <input name="keywords" value={resumeForm.keywords} onChange={e => setResumeForm({ ...resumeForm, keywords: e.target.value })} placeholder="Keywords (comma separated)" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
-                  <select name="status" value={resumeForm.status} onChange={e => setResumeForm({ ...resumeForm, status: e.target.value })} style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }}>
-                    <option value="Active">Active</option>
-                    <option value="Draft">Draft</option>
-                  </select>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button className="js-action-button primary" onClick={saveResume}>{editingResume ? 'Save' : 'Add'}</button>
-                    <button className="js-action-button secondary" onClick={() => { setShowResumeForm(false); setEditingResume(null); }}>Cancel</button>
-                  </div>
-                </div>
-              )}
-              {/* Scan Modal */}
-              {showScanModal && scanResult && (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: '#0008', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-                  <div style={{ background: '#fff', borderRadius: 12, padding: 32, minWidth: 320, maxWidth: 400, boxShadow: '0 8px 32px #0004' }}>
-                    <h3 style={{ color: '#2563eb', marginBottom: 12 }}>Resume Scanned</h3>
-                    <div style={{ marginBottom: 12 }}><b>Resume:</b> {scanResult.name}</div>
-                    <div style={{ marginBottom: 12 }}><b>New Score:</b> {scanResult.score}/100</div>
-                    <div style={{ marginBottom: 12 }}><b>Keywords:</b> {scanResult.keywords.join(', ')}</div>
-                    <button className="js-action-button primary" onClick={() => setShowScanModal(false)}>Close</button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Recent Activity Section */}
-            <div style={{ marginBottom: '3rem' }}>
-              <h3 className="js-section-title">Recent Activity</h3>
-              {recentActivity.map(activity => (
-                <div key={activity.id} className="js-resume-item">
-                  <div className="js-resume-info">
-                    <h4>{activity.action}</h4>
-                    <p>{activity.company} • {activity.date}</p>
-                  </div>
-                  <div className="js-resume-actions">
-                    {activity.score && (
-                      <span style={{ 
-                        background: '#dcfce7', 
-                        color: '#166534', 
-                        padding: '0.25rem 0.75rem', 
-                        borderRadius: '20px', 
-                        fontSize: '0.875rem', 
-                        fontWeight: '600' 
-                      }}>
-                        {activity.score}% Match
-                      </span>
-                    )}
-                    {activity.status && (
-                      <span style={{ 
-                        background: '#dbeafe', 
-                        color: '#1e40af', 
-                        padding: '0.25rem 0.75rem', 
-                        borderRadius: '20px', 
-                        fontSize: '0.875rem', 
-                        fontWeight: '600' 
-                      }}>
-                        {activity.status}
-                      </span>
-                    )}
-                  </div>
-                </div>
+        {/* Profile Main Content */}
+        <div className="js-profile-main">
+          {/* Skills */}
+          <div style={{ marginBottom: '2rem' }}>
+            <h3 className="js-section-title">Skills</h3>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
+              {userProfile.skills.map(skill => (
+                <span key={skill} className="js-job-tag">
+                  {skill} <button onClick={() => removeSkill(skill)} style={{ marginLeft: 4, color: '#dc2626', background: 'none', border: 'none', cursor: 'pointer' }}>×</button>
+                </span>
               ))}
             </div>
+            <input value={newSkill} onChange={e => setNewSkill(e.target.value)} placeholder="Add skill" style={{ padding: '0.5rem', borderRadius: 6, border: '1px solid #e2e8f0', marginRight: 8 }} />
+            <button className="js-action-button primary" onClick={addSkill}>Add</button>
+          </div>
 
-            {/* Job Preferences Section */}
-            <div style={{ marginBottom: '3rem' }}>
-              <h3 className="js-section-title">Job Preferences</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: 12 }}>
-                <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Location</div>
-                  <div style={{ color: '#64748b', fontSize: '0.875rem' }}>{userProfile.meta.location}</div>
+          {/* Resumes Section */}
+          <div style={{ marginBottom: '3rem' }}>
+            <h3 className="js-section-title">Your Resumes</h3>
+            {userProfile.resumes.map(resume => (
+              <div key={resume.id} className="js-resume-item">
+                <div className="js-resume-info">
+                  <h4>{resume.name}</h4>
+                  <p>Last updated: {resume.lastUpdated} • Score: {resume.score}/100 • Status: {resume.status}</p>
+                  <div style={{ color: '#64748b', fontSize: '0.85rem', marginTop: 4 }}>Keywords: {resume.keywords.join(', ')}</div>
                 </div>
-                <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Work Type</div>
-                  <div style={{ color: '#64748b', fontSize: '0.875rem' }}>{userProfile.meta.workType}</div>
-                </div>
-                <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Salary Range</div>
-                  <div style={{ color: '#64748b', fontSize: '0.875rem' }}>${userProfile.meta.salaryMin} - ${userProfile.meta.salaryMax}</div>
-                </div>
-                <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Employer Type</div>
-                  <div style={{ color: '#64748b', fontSize: '0.875rem' }}>{userProfile.meta.employerType}</div>
-                </div>
-                <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Sector</div>
-                  <div style={{ color: '#64748b', fontSize: '0.875rem' }}>{userProfile.meta.sector}</div>
+                <div className="js-resume-actions">
+                  <button 
+                    className="js-action-button primary"
+                    onClick={() => openEditResume(resume)}
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    className="js-action-button secondary"
+                    onClick={() => scanResume(resume)}
+                  >
+                    Scan
+                  </button>
+                  <button 
+                    className="js-action-button secondary"
+                    onClick={() => downloadResume(resume)}
+                  >
+                    Download
+                  </button>
+                  <button 
+                    className="js-action-button secondary"
+                    style={{ color: '#dc2626', borderColor: '#dc2626' }}
+                    onClick={() => deleteResume(resume.id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
-              <button className="js-action-button secondary" onClick={openPrefs} style={{ marginTop: 8 }}>
-                Edit Preferences
-              </button>
-              {showPrefs && (
-                <div style={{ background: '#fff', border: '2px solid #2563eb', borderRadius: 12, padding: 24, marginTop: 16, boxShadow: '0 4px 16px #2563eb22', maxWidth: 400 }}>
-                  <h4 style={{ color: '#2563eb', marginBottom: 12 }}>Edit Job Preferences</h4>
-                  <input value={prefsForm.location} onChange={e => setPrefsForm({ ...prefsForm, location: e.target.value })} placeholder="Location" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
-                  <select value={prefsForm.workType} onChange={e => setPrefsForm({ ...prefsForm, workType: e.target.value })} style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }}>
-                    <option value="Remote">Remote</option>
-                    <option value="Hybrid">Hybrid</option>
-                    <option value="In-person">In-person</option>
-                  </select>
-                  <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-                    <input type="number" value={prefsForm.salaryMin} onChange={e => setPrefsForm({ ...prefsForm, salaryMin: e.target.value })} placeholder="Min Salary" style={{ flex: 1, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
-                    <input type="number" value={prefsForm.salaryMax} onChange={e => setPrefsForm({ ...prefsForm, salaryMax: e.target.value })} placeholder="Max Salary" style={{ flex: 1, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
-                  </div>
-                  <input value={prefsForm.employerType} onChange={e => setPrefsForm({ ...prefsForm, employerType: e.target.value })} placeholder="Employer Type" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
-                  <input value={prefsForm.sector} onChange={e => setPrefsForm({ ...prefsForm, sector: e.target.value })} placeholder="Sector" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button className="js-action-button primary" onClick={savePrefs}>Save</button>
-                    <button className="js-action-button secondary" onClick={() => setShowPrefs(false)}>Cancel</button>
-                  </div>
+            ))}
+            <button 
+              className="js-action-button primary"
+              style={{ marginTop: '1rem' }}
+              onClick={openAddResume}
+            >
+              + Add New Resume
+            </button>
+            {/* Resume Modal/Form */}
+            {showResumeForm && (
+              <div style={{ background: '#fff', border: '2px solid #2563eb', borderRadius: 12, padding: 24, marginTop: 16, boxShadow: '0 4px 16px #2563eb22' }}>
+                <h4 style={{ color: '#2563eb', marginBottom: 12 }}>{editingResume ? 'Edit Resume' : 'Add Resume'}</h4>
+                <input name="name" value={resumeForm.name} onChange={e => setResumeForm({ ...resumeForm, name: e.target.value })} placeholder="Resume Name" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+                <input name="keywords" value={resumeForm.keywords} onChange={e => setResumeForm({ ...resumeForm, keywords: e.target.value })} placeholder="Keywords (comma separated)" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+                <select name="status" value={resumeForm.status} onChange={e => setResumeForm({ ...resumeForm, status: e.target.value })} style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }}>
+                  <option value="Active">Active</option>
+                  <option value="Draft">Draft</option>
+                </select>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button className="js-action-button primary" onClick={saveResume}>{editingResume ? 'Save' : 'Add'}</button>
+                  <button className="js-action-button secondary" onClick={() => { setShowResumeForm(false); setEditingResume(null); }}>Cancel</button>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+            {/* Scan Modal */}
+            {showScanModal && scanResult && (
+              <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: '#0008', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+                <div style={{ background: '#fff', borderRadius: 12, padding: 32, minWidth: 320, maxWidth: 400, boxShadow: '0 8px 32px #0004' }}>
+                  <h3 style={{ color: '#2563eb', marginBottom: 12 }}>Resume Scanned</h3>
+                  <div style={{ marginBottom: 12 }}><b>Resume:</b> {scanResult.name}</div>
+                  <div style={{ marginBottom: 12 }}><b>New Score:</b> {scanResult.score}/100</div>
+                  <div style={{ marginBottom: 12 }}><b>Keywords:</b> {scanResult.keywords.join(', ')}</div>
+                  <button className="js-action-button primary" onClick={() => setShowScanModal(false)}>Close</button>
+                </div>
+              </div>
+            )}
+          </div>
 
-            {/* DREAM JOB SECTION */}
-            <div style={{ marginBottom: '2.5rem', background: '#f8fafc', borderRadius: 12, padding: '2rem', border: '2px solid #2563eb' }}>
-              <h3 className="js-section-title" style={{ color: '#2563eb' }}>Dream Job</h3>
-              {userProfile.dreamJobs.length === 0 && <div style={{ color: '#64748b', marginBottom: 12 }}>No dream jobs added yet.</div>}
-              {userProfile.dreamJobs.map(job => (
-                <div key={job.id} style={{ marginBottom: 16, padding: 12, borderRadius: 8, background: userProfile.activeDreamJobId === job.id ? '#dbeafe' : '#fff', border: userProfile.activeDreamJobId === job.id ? '2px solid #2563eb' : '1px solid #e2e8f0', boxShadow: userProfile.activeDreamJobId === job.id ? '0 2px 8px #2563eb22' : 'none' }}>
-                  <div style={{ fontWeight: 600, fontSize: '1.1rem', color: '#1a202c' }}>{job.title}</div>
-                  <div style={{ color: '#64748b', margin: '8px 0' }}>{job.description}</div>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    <button className="js-action-button primary" style={{ background: userProfile.activeDreamJobId === job.id ? '#2563eb' : undefined }} onClick={() => setActiveDreamJob(job.id)}>
-                      {userProfile.activeDreamJobId === job.id ? 'Active Dream Job' : 'Set as Active'}
-                    </button>
-                    <button className="js-action-button secondary" onClick={() => openEditDreamJob(job)}>Edit</button>
-                    <button className="js-action-button secondary" style={{ color: '#dc2626', borderColor: '#dc2626' }} onClick={() => deleteDreamJob(job.id)}>Delete</button>
-                  </div>
+          {/* Recent Activity Section */}
+          <div style={{ marginBottom: '3rem' }}>
+            <h3 className="js-section-title">Recent Activity</h3>
+            {recentActivity.map(activity => (
+              <div key={activity.id} className="js-resume-item">
+                <div className="js-resume-info">
+                  <h4>{activity.action}</h4>
+                  <p>{activity.company} • {activity.date}</p>
                 </div>
-              ))}
-              <button className="js-action-button primary" style={{ marginTop: 8 }} onClick={openAddDreamJob}>+ Add Dream Job</button>
-              {/* Dream Job Modal/Form */}
-              {showDreamJobForm && (
-                <div style={{ background: '#fff', border: '2px solid #2563eb', borderRadius: 12, padding: 24, marginTop: 16, boxShadow: '0 4px 16px #2563eb22' }}>
-                  <h4 style={{ color: '#2563eb', marginBottom: 12 }}>{editingDreamJob ? 'Edit Dream Job' : 'Add Dream Job'}</h4>
-                  <input name="title" value={dreamJobForm.title} onChange={handleDreamJobFormChange} placeholder="Dream Job Title" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
-                  <textarea name="description" value={dreamJobForm.description} onChange={handleDreamJobFormChange} placeholder="Describe your dream job in detail..." style={{ width: '100%', minHeight: 80, marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button className="js-action-button primary" onClick={saveDreamJob}>{editingDreamJob ? 'Save' : 'Add'}</button>
-                    <button className="js-action-button secondary" onClick={() => { setShowDreamJobForm(false); setEditingDreamJob(null); }}>Cancel</button>
-                  </div>
+                <div className="js-resume-actions">
+                  {activity.score && (
+                    <span style={{ 
+                      background: '#dcfce7', 
+                      color: '#166534', 
+                      padding: '0.25rem 0.75rem', 
+                      borderRadius: '20px', 
+                      fontSize: '0.875rem', 
+                      fontWeight: '600' 
+                    }}>
+                      {activity.score}% Match
+                    </span>
+                  )}
+                  {activity.status && (
+                    <span style={{ 
+                      background: '#dbeafe', 
+                      color: '#1e40af', 
+                      padding: '0.25rem 0.75rem', 
+                      borderRadius: '20px', 
+                      fontSize: '0.875rem', 
+                      fontWeight: '600' 
+                    }}>
+                      {activity.status}
+                    </span>
+                  )}
                 </div>
-              )}
+              </div>
+            ))}
+          </div>
+
+          {/* Job Preferences Section */}
+          <div style={{ marginBottom: '3rem' }}>
+            <h3 className="js-section-title">Job Preferences</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: 12 }}>
+              <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Location</div>
+                <div style={{ color: '#64748b', fontSize: '0.875rem' }}>{userProfile.meta.location}</div>
+              </div>
+              <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Work Type</div>
+                <div style={{ color: '#64748b', fontSize: '0.875rem' }}>{userProfile.meta.workType}</div>
+              </div>
+              <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Salary Range</div>
+                <div style={{ color: '#64748b', fontSize: '0.875rem' }}>${userProfile.meta.salaryMin} - ${userProfile.meta.salaryMax}</div>
+              </div>
+              <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Employer Type</div>
+                <div style={{ color: '#64748b', fontSize: '0.875rem' }}>{userProfile.meta.employerType}</div>
+              </div>
+              <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontWeight: '600', color: '#1a202c', marginBottom: '0.5rem' }}>Sector</div>
+                <div style={{ color: '#64748b', fontSize: '0.875rem' }}>{userProfile.meta.sector}</div>
+              </div>
             </div>
+            <button className="js-action-button secondary" onClick={openPrefs} style={{ marginTop: 8 }}>
+              Edit Preferences
+            </button>
+            {showPrefs && (
+              <div style={{ background: '#fff', border: '2px solid #2563eb', borderRadius: 12, padding: 24, marginTop: 16, boxShadow: '0 4px 16px #2563eb22', maxWidth: 400 }}>
+                <h4 style={{ color: '#2563eb', marginBottom: 12 }}>Edit Job Preferences</h4>
+                <input value={prefsForm.location} onChange={e => setPrefsForm({ ...prefsForm, location: e.target.value })} placeholder="Location" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+                <select value={prefsForm.workType} onChange={e => setPrefsForm({ ...prefsForm, workType: e.target.value })} style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }}>
+                  <option value="Remote">Remote</option>
+                  <option value="Hybrid">Hybrid</option>
+                  <option value="In-person">In-person</option>
+                </select>
+                <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+                  <input type="number" value={prefsForm.salaryMin} onChange={e => setPrefsForm({ ...prefsForm, salaryMin: e.target.value })} placeholder="Min Salary" style={{ flex: 1, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+                  <input type="number" value={prefsForm.salaryMax} onChange={e => setPrefsForm({ ...prefsForm, salaryMax: e.target.value })} placeholder="Max Salary" style={{ flex: 1, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+                </div>
+                <input value={prefsForm.employerType} onChange={e => setPrefsForm({ ...prefsForm, employerType: e.target.value })} placeholder="Employer Type" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+                <input value={prefsForm.sector} onChange={e => setPrefsForm({ ...prefsForm, sector: e.target.value })} placeholder="Sector" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button className="js-action-button primary" onClick={savePrefs}>Save</button>
+                  <button className="js-action-button secondary" onClick={() => setShowPrefs(false)}>Cancel</button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* DREAM JOB SECTION */}
+          <div style={{ marginBottom: '2.5rem', background: '#f8fafc', borderRadius: 12, padding: '2rem', border: '2px solid #2563eb' }}>
+            <h3 className="js-section-title" style={{ color: '#2563eb' }}>Dream Job</h3>
+            {userProfile.dreamJobs.length === 0 && <div style={{ color: '#64748b', marginBottom: 12 }}>No dream jobs added yet.</div>}
+            {userProfile.dreamJobs.map(job => (
+              <div key={job.id} style={{ marginBottom: 16, padding: 12, borderRadius: 8, background: userProfile.activeDreamJobId === job.id ? '#dbeafe' : '#fff', border: userProfile.activeDreamJobId === job.id ? '2px solid #2563eb' : '1px solid #e2e8f0', boxShadow: userProfile.activeDreamJobId === job.id ? '0 2px 8px #2563eb22' : 'none' }}>
+                <div style={{ fontWeight: 600, fontSize: '1.1rem', color: '#1a202c' }}>{job.title}</div>
+                <div style={{ color: '#64748b', margin: '8px 0' }}>{job.description}</div>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <button className="js-action-button primary" style={{ background: userProfile.activeDreamJobId === job.id ? '#2563eb' : undefined }} onClick={() => setActiveDreamJob(job.id)}>
+                    {userProfile.activeDreamJobId === job.id ? 'Active Dream Job' : 'Set as Active'}
+                  </button>
+                  <button className="js-action-button secondary" onClick={() => openEditDreamJob(job)}>Edit</button>
+                  <button className="js-action-button secondary" style={{ color: '#dc2626', borderColor: '#dc2626' }} onClick={() => deleteDreamJob(job.id)}>Delete</button>
+                </div>
+              </div>
+            ))}
+            <button className="js-action-button primary" style={{ marginTop: 8 }} onClick={openAddDreamJob}>+ Add Dream Job</button>
+            {/* Dream Job Modal/Form */}
+            {showDreamJobForm && (
+              <div style={{ background: '#fff', border: '2px solid #2563eb', borderRadius: 12, padding: 24, marginTop: 16, boxShadow: '0 4px 16px #2563eb22' }}>
+                <h4 style={{ color: '#2563eb', marginBottom: 12 }}>{editingDreamJob ? 'Edit Dream Job' : 'Add Dream Job'}</h4>
+                <input name="title" value={dreamJobForm.title} onChange={handleDreamJobFormChange} placeholder="Dream Job Title" style={{ width: '100%', marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+                <textarea name="description" value={dreamJobForm.description} onChange={handleDreamJobFormChange} placeholder="Describe your dream job in detail..." style={{ width: '100%', minHeight: 80, marginBottom: 12, padding: 8, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button className="js-action-button primary" onClick={saveDreamJob}>{editingDreamJob ? 'Save' : 'Add'}</button>
+                  <button className="js-action-button secondary" onClick={() => { setShowDreamJobForm(false); setEditingDreamJob(null); }}>Cancel</button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

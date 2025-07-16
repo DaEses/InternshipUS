@@ -1,7 +1,18 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import '../Home.css';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import 'pdfjs-dist/build/pdf.worker.entry';
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/node_modules/pdfjs-dist/build/pdf.worker.entry.js';
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.15, duration: 0.7, type: 'spring', stiffness: 60 }
+  })
+};
 
 // Simple keyword extraction (same as JobMatcher)
 const stopwords = new Set(['the','and','a','an','to','of','in','on','for','with','by','at','is','are','as','be','from','that','this','it','our','we','you','your','us','will','must','have','has','was','were','or','but','if','then','so','not','can','should','may','do','does','did','using','used','into','out','about','over','under','more','less','than','such','these','those','their','which','who','what','when','where','how','why','all','any','each','other','some','most','many','much','very','just','also','too','both','either','neither','own','same','new','now','after','before','again','once']);
@@ -161,8 +172,18 @@ export default function Scanner() {
   };
 
   return (
-    <div className="js-scanner">
-      <div className="js-scanner-container">
+    <div className="js-home teal-home">
+      {/* Hero Section */}
+      <motion.section className="teal-hero" initial="hidden" animate="visible" variants={fadeInUp}>
+        <motion.div className="teal-hero-content" variants={fadeInUp} custom={1}>
+          <motion.h1 variants={fadeInUp} custom={1}>Resume & Job Description Scan</motion.h1>
+          <motion.p variants={fadeInUp} custom={2}>Upload your resume and a job description to see how well you match and get instant, actionable feedback.</motion.p>
+        </motion.div>
+        <motion.div className="teal-hero-image" variants={fadeInUp} custom={2}>
+          <img src="https://placehold.co/400x260?text=Scan" alt="Scan" />
+        </motion.div>
+      </motion.section>
+      <div className="js-scanner-container" style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1rem' }}>
         <div className="js-scanner-header">
           <h2>Resume & Job Description Scanner</h2>
           <p>Upload your resume and job description as TXT files, or paste the text below. Get instant feedback on how well they match.</p>
