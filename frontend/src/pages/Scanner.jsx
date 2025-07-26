@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import OptimizedImage from '../components/OptimizedImage';
 import '../Home.css';
-import * as pdfjsLib from 'pdfjs-dist/build/pdf';
-import 'pdfjs-dist/build/pdf.worker.entry';
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/node_modules/pdfjs-dist/build/pdf.worker.entry.js';
-
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
+// Set workerSrc to CDN version for Vite compatibility
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/legacy/build/pdf.worker.min.js`;
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
   visible: (i = 1) => ({
@@ -180,7 +180,12 @@ export default function Scanner() {
           <motion.p variants={fadeInUp} custom={2}>Upload your resume and a job description to see how well you match and get instant, actionable feedback.</motion.p>
         </motion.div>
         <motion.div className="teal-hero-image" variants={fadeInUp} custom={2}>
-          <img src="https://placehold.co/400x260?text=Scan" alt="Scan" />
+          <OptimizedImage 
+            src="/images/scanner-hero.jpg" 
+            alt="Document scanning and analysis" 
+            className="hero-image"
+            loading="eager" // Eager load hero images
+          />
         </motion.div>
       </motion.section>
       <div className="js-scanner-container" style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1rem' }}>
@@ -239,7 +244,7 @@ export default function Scanner() {
           <div style={{ marginTop: 32, background: '#fff', borderRadius: 12, padding: 24, boxShadow: '0 4px 16px #2563eb22', border: '1px solid #e2e8f0' }}>
             <h3 style={{ color: '#2563eb', marginBottom: 12 }}>Scan Results</h3>
             <div style={{ fontSize: '2rem', fontWeight: 700, color: '#2563eb', marginBottom: 8 }}>{results.score}% Match</div>
-            <div style={{ marginBottom: 16, color: '#64748b' }}>Your resume matches {results.found.length} out of {results.found.length + results.missing.length} keywords from the job description.</div>
+            <div style={{ marginBottom: 16, color: '#ffffff' }}>Your resume matches {results.found.length} out of {results.found.length + results.missing.length} keywords from the job description.</div>
             <div style={{ marginBottom: 12 }}>
               <b>Found Keywords:</b> {results.found.length ? results.found.map(k => <span key={k} style={{ background: '#dcfce7', color: '#166534', borderRadius: 20, padding: '4px 12px', marginRight: 6, fontSize: '0.95em' }}>{k}</span>) : <span style={{ color: '#dc2626' }}>None</span>}
             </div>

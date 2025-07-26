@@ -1,29 +1,55 @@
-/* Oceanic Blue Palette */
+/* Misty Blue Palette */
 :root {
-  --navy-blue: #05445E;
-  --blue-grotto: #189AB4;
-  --blue-green: #75E6DA;
-  --baby-blue: #D4F1F4;
+  --background: #d9e4ec; /* Blue Gray */
+  --surface: #fff;
+  --border: #b7cfdc; /* Misty Blue (light) for subtle borders */
+  --text-main: #385e72; /* Misty Blue (dark) */
+  --text-secondary: #6aabd2; /* Blue Grotto for secondary text */
+  --accent: #6aabd2; /* Blue Grotto for main accent */
+  --accent-light: #b7cfdc; /* Misty Blue (light) for backgrounds */
+  --shadow: 0 4px 24px rgba(56, 94, 114, 0.07);
+  --radius: 1.2rem;
+  --font-main: 'Inter', system-ui, sans-serif;
 }
 
-body, .teal-home {
-  background: var(--baby-blue);
-  color: var(--navy-blue);
+/* Decorative splashes */
+.splash-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 8px 0 0;
 }
+.splash-yellow { background: var(--accent); }
+.splash-blue { background: var(--accent); }
+.splash-light { background: var(--accent-light); }
 
+/* Add splashes to hero and features */
 .teal-hero {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   min-height: 420px;
-  padding: 3rem 1.5rem 2rem 1.5rem;
-  background: linear-gradient(120deg, var(--navy-blue) 0%, var(--blue-grotto) 60%, var(--blue-green) 100%);
-  color: #fff;
+  padding: 3.5rem 2rem 2.5rem 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text-main);
   gap: 2.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 2.5rem auto 2rem auto;
+  max-width: 1200px;
 }
+.teal-hero .splash-dot {
+  position: absolute;
+  z-index: 0;
+}
+.teal-hero .splash-yellow { top: 18px; left: 24px; }
+.teal-hero .splash-blue { bottom: 32px; right: 40px; }
+
 .teal-hero-content {
-  flex: 1 1 340px;
+  flex: 1 1 380px;
   min-width: 320px;
   max-width: 520px;
   z-index: 2;
@@ -31,43 +57,42 @@ body, .teal-home {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding-bottom: 1.5rem;
+  padding-bottom: 0;
+  gap: 1.2rem;
 }
 .teal-hero-content h1 {
-  color: #fff;
+  color: var(--text-main);
   font-size: 2.8rem;
   font-weight: 800;
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.5rem;
   line-height: 1.1;
   letter-spacing: -1px;
 }
 .teal-hero-content p {
-  color: var(--baby-blue);
+  color: var(--text-secondary);
   font-size: 1.25rem;
-  margin-bottom: 1.7rem;
+  margin-bottom: 0.5rem;
 }
 .teal-cta {
   display: inline-block;
-  background: linear-gradient(90deg, var(--blue-grotto) 0%, var(--blue-green) 100%);
-  color: var(--navy-blue);
+  background: var(--accent);
+  color: var(--surface);
   border: none;
   font-weight: 700;
   font-size: 1.1rem;
-  border-radius: 0.7rem;
+  border-radius: 2rem;
   padding: 0.85rem 2.2rem;
   margin-top: 0.2rem;
-  box-shadow: 0 4px 16px rgba(24, 154, 180, 0.15);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   text-decoration: none;
 }
 .teal-cta:hover {
-  background: linear-gradient(90deg, var(--blue-green) 0%, var(--blue-grotto) 100%);
-  color: #fff;
-  box-shadow: 0 8px 32px rgba(24, 154, 180, 0.18);
+  background: var(--text-main);
+  color: var(--accent);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
 }
 .teal-cta.large {
-  background: linear-gradient(90deg, var(--navy-blue) 0%, var(--blue-grotto) 100%);
-  color: #fff;
   font-size: 1.2rem;
   padding: 1.1rem 2.8rem;
 }
@@ -75,29 +100,35 @@ body, .teal-home {
 .teal-hero-image {
   flex: 1 1 320px;
   min-width: 280px;
-  max-width: 480px;
+  max-width: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1;
+  margin-top: 0;
 }
-.teal-hero-image img {
+.teal-hero-image img, .teal-hero-image svg {
   width: 100%;
-  max-width: 420px;
+  max-width: 380px;
   min-width: 220px;
-  border-radius: 1.2rem;
-  box-shadow: 0 6px 32px rgba(5, 68, 94, 0.13);
-  background: var(--baby-blue);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
 }
 
 .teal-trusted {
-  background: var(--blue-grotto);
-  color: #fff;
+  background: var(--surface);
+  color: var(--text-main);
   padding: 2.2rem 0 1.2rem 0;
   text-align: center;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 2rem auto 2rem auto;
+  max-width: 1000px;
 }
 .teal-trusted h2 {
-  color: #fff;
+  color: var(--text-secondary);
   font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 1.1rem;
@@ -112,101 +143,32 @@ body, .teal-home {
   margin-bottom: 0.5rem;
 }
 .teal-logos-row img {
-  background: #fff;
-  border: 1.5px solid var(--blue-green);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
   border-radius: 0.6rem;
   padding: 0.5rem 1.2rem;
   height: 40px;
   width: 100px;
   object-fit: contain;
-  box-shadow: 0 2px 8px rgba(117, 230, 218, 0.10);
-  transition: transform 0.18s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.18s, border-color 0.18s;
 }
 .teal-logos-row img:hover {
   transform: scale(1.08);
-  border-color: var(--navy-blue);
+  border-color: var(--accent);
 }
-
-/* Responsive adjustments */
-@media (max-width: 900px) {
-  .teal-hero {
-    flex-direction: column;
-    padding: 2.2rem 0.5rem 1.2rem 0.5rem;
-    gap: 1.5rem;
-  }
-  .teal-hero-content, .teal-hero-image {
-    max-width: 98vw;
-    min-width: 0;
-  }
-}
-
-/* Keep the rest of the site using the blue palette and spacing */
-.teal-feature-card {
-  border: 2px solid var(--blue-grotto);
-  background: #fff;
-}
-.teal-feature-card:hover {
-  border-color: var(--blue-green);
-}
-.teal-feature-card img {
-  background: var(--baby-blue);
-}
-
-.teal-step-icon {
-  background: linear-gradient(135deg, var(--blue-grotto) 0%, var(--blue-green) 100%);
-  color: #fff;
-}
-
-.teal-benefit-row,
-.teal-benefit-row.reverse {
-  background: #fff;
-  border-radius: 1.5rem;
-  box-shadow: 0 2px 16px rgba(24, 154, 180, 0.08);
-  margin-bottom: 2.5rem;
-  padding: 2rem 1.5rem;
-}
-
-.teal-benefit-image img {
-  background: var(--baby-blue);
-}
-
-.teal-testimonials {
-  background: var(--baby-blue);
-}
-.teal-testimonial-card {
-  border: 2px solid var(--blue-grotto);
-  background: #fff;
-}
-.teal-testimonial-card:hover {
-  border-color: var(--blue-green);
-}
-.teal-user-name {
-  color: var(--blue-grotto);
-}
-
-.teal-faq {
-  background: #fff;
-  border: 2px solid var(--blue-grotto);
-}
-.teal-faq-item {
-  border: 2px solid var(--blue-green);
-  background: var(--baby-blue);
-}
-.teal-faq-item h3 {
-  color: var(--blue-grotto);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--blue-grotto);
-} 
 
 .teal-how-it-works {
-  background: var(--baby-blue);
+  background: var(--surface);
   padding: 3rem 0 2.5rem 0;
   text-align: center;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 2rem auto 2rem auto;
+  max-width: 1000px;
 }
 .teal-how-it-works h2 {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 2.2rem;
@@ -218,10 +180,10 @@ body, .teal-home {
   gap: 2.2rem;
 }
 .teal-step {
-  background: #fff;
-  border: 2px solid var(--blue-grotto);
-  border-radius: 1.2rem;
-  box-shadow: 0 2px 12px rgba(24, 154, 180, 0.08);
+  background: var(--background);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   padding: 2rem 1.5rem;
   width: 240px;
   min-width: 200px;
@@ -232,41 +194,45 @@ body, .teal-home {
   transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
 }
 .teal-step:hover {
-  border-color: var(--blue-green);
-  box-shadow: 0 6px 24px rgba(24, 154, 180, 0.13);
+  border-color: var(--accent);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.10);
   transform: translateY(-4px) scale(1.03);
 }
 .teal-step-icon {
   font-size: 2.2rem;
   margin-bottom: 1.1rem;
-  background: linear-gradient(135deg, var(--blue-grotto) 0%, var(--blue-green) 100%);
-  color: #fff;
+  background: var(--accent);
+  color: var(--surface);
   border-radius: 50%;
   width: 54px;
   height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(24, 154, 180, 0.13);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 .teal-step h3 {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 1.15rem;
   font-weight: 700;
   margin-bottom: 0.7rem;
 }
 .teal-step p {
-  color: var(--blue-grotto);
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
 .teal-features {
-  background: var(--baby-blue);
+  background: var(--surface);
   padding: 3rem 0 2.5rem 0;
   text-align: center;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 2rem auto 2rem auto;
+  max-width: 1000px;
 }
 .teal-features h2 {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 2.2rem;
@@ -278,10 +244,10 @@ body, .teal-home {
   gap: 2.2rem;
 }
 .teal-feature-card {
-  background: #fff;
-  border: 2px solid var(--blue-grotto);
-  border-radius: 1.2rem;
-  box-shadow: 0 2px 12px rgba(24, 154, 180, 0.08);
+  background: var(--accent-light);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   padding: 2rem 1.5rem;
   width: 240px;
   min-width: 200px;
@@ -292,28 +258,31 @@ body, .teal-home {
   transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
 }
 .teal-feature-card:hover {
-  border-color: var(--blue-green);
-  box-shadow: 0 6px 24px rgba(24, 154, 180, 0.13);
+  border-color: var(--accent);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.10);
   transform: translateY(-4px) scale(1.03);
 }
+.teal-feature-card:nth-child(2n) {
+  background: var(--background);
+}
 .teal-feature-card img {
-  background: var(--baby-blue);
+  background: var(--surface);
   border-radius: 0.7rem;
   margin-bottom: 1.1rem;
 }
 .teal-feature-card h3 {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 1.15rem;
   font-weight: 700;
   margin-bottom: 0.7rem;
 }
 .teal-feature-card p {
-  color: var(--blue-grotto);
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
 .teal-benefits {
-  background: var(--baby-blue);
+  background: var(--background);
   padding: 3rem 0 2.5rem 0;
 }
 .teal-benefit-row {
@@ -323,9 +292,9 @@ body, .teal-home {
   justify-content: center;
   gap: 2.5rem;
   margin-bottom: 2.5rem;
-  background: #fff;
-  border-radius: 1.5rem;
-  box-shadow: 0 2px 16px rgba(24, 154, 180, 0.08);
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   padding: 2rem 1.5rem;
 }
 .teal-benefit-row.reverse {
@@ -337,13 +306,13 @@ body, .teal-home {
   max-width: 480px;
 }
 .teal-benefit-text h2 {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1.1rem;
 }
 .teal-benefit-text p {
-  color: var(--blue-grotto);
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 .teal-benefit-image {
@@ -358,18 +327,19 @@ body, .teal-home {
   width: 100%;
   max-width: 320px;
   min-width: 120px;
-  border-radius: 1.2rem;
-  box-shadow: 0 4px 16px rgba(117, 230, 218, 0.13);
-  background: var(--baby-blue);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
 }
 
 .teal-testimonials {
-  background: var(--baby-blue);
+  background: var(--background);
   padding: 3rem 0 2.5rem 0;
   text-align: center;
 }
 .teal-testimonials h2 {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 2.2rem;
@@ -381,10 +351,10 @@ body, .teal-home {
   gap: 2.2rem;
 }
 .teal-testimonial-card {
-  background: #fff;
-  border: 2px solid var(--blue-grotto);
-  border-radius: 1.2rem;
-  box-shadow: 0 2px 12px rgba(24, 154, 180, 0.08);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   padding: 2rem 1.5rem;
   width: 260px;
   min-width: 200px;
@@ -395,12 +365,12 @@ body, .teal-home {
   transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
 }
 .teal-testimonial-card:hover {
-  border-color: var(--blue-green);
-  box-shadow: 0 6px 24px rgba(24, 154, 180, 0.13);
+  border-color: var(--accent);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.10);
   transform: translateY(-4px) scale(1.03);
 }
 .teal-testimonial-card img {
-  background: var(--baby-blue);
+  background: var(--surface);
   border-radius: 50%;
   margin-bottom: 1.1rem;
   width: 64px;
@@ -408,51 +378,51 @@ body, .teal-home {
   object-fit: cover;
 }
 .teal-testimonial-card blockquote {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 1.05rem;
   font-style: italic;
   margin-bottom: 0.7rem;
 }
 .teal-user-name {
-  color: var(--blue-grotto);
+  color: var(--accent);
   font-weight: 600;
   font-size: 1rem;
 }
 
 .teal-cta-section {
-  background: linear-gradient(90deg, var(--blue-grotto) 0%, var(--blue-green) 100%);
-  color: var(--navy-blue);
+  background: var(--accent);
+  color: var(--surface);
   text-align: center;
   padding: 3rem 0 2.5rem 0;
-  border-radius: 1.5rem;
+  border-radius: var(--radius);
   margin: 2.5rem auto 2rem auto;
   max-width: 900px;
-  box-shadow: 0 2px 16px rgba(24, 154, 180, 0.08);
+  box-shadow: var(--shadow);
 }
 .teal-cta-section h2 {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1.1rem;
 }
 .teal-cta-section p {
-  color: var(--blue-grotto);
+  color: #444;
   font-size: 1.1rem;
   margin-bottom: 1.7rem;
 }
 
 .teal-faq {
-  background: #fff;
-  border: 2px solid var(--blue-grotto);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
   padding: 3rem 0 2.5rem 0;
-  border-radius: 1.5rem;
+  border-radius: var(--radius);
   margin: 2.5rem auto 2rem auto;
   max-width: 900px;
-  box-shadow: 0 2px 16px rgba(24, 154, 180, 0.08);
+  box-shadow: var(--shadow);
   text-align: center;
 }
 .teal-faq h2 {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 2.2rem;
@@ -464,28 +434,47 @@ body, .teal-home {
   gap: 2.2rem;
 }
 .teal-faq-item {
-  border: 2px solid var(--blue-green);
-  background: var(--baby-blue);
-  border-radius: 1.2rem;
+  border: 1.5px solid var(--accent);
+  background: var(--background);
+  border-radius: var(--radius);
   padding: 1.5rem 1.2rem;
   min-width: 220px;
   max-width: 340px;
   flex: 1 1 220px;
-  box-shadow: 0 2px 8px rgba(117, 230, 218, 0.10);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   text-align: left;
 }
 .teal-faq-item h3 {
-  color: var(--blue-grotto);
+  color: var(--accent);
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 0.7rem;
 }
 .teal-faq-item p {
-  color: var(--navy-blue);
+  color: var(--text-main);
   font-size: 1rem;
 }
 
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+} 
+
+/* Responsive adjustments */
 @media (max-width: 900px) {
+  .teal-hero {
+    flex-direction: column;
+    padding: 2.2rem 0.5rem 1.2rem 0.5rem;
+    gap: 1.5rem;
+  }
+  .teal-hero-content, .teal-hero-image {
+    max-width: 98vw;
+    min-width: 0;
+    align-items: center;
+    text-align: center;
+  }
+  .teal-hero-content {
+    align-items: center;
+  }
   .teal-steps,
   .teal-feature-cards,
   .teal-benefit-row,
@@ -503,4 +492,21 @@ body, .teal-home {
   .teal-faq {
     padding: 2rem 0.5rem 1.2rem 0.5rem;
   }
+} 
+
+body, .teal-home {
+  background: linear-gradient(rgba(217,228,236,0.35), rgba(217,228,236,0.35)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: var(--text-main);
+  font-family: var(--font-main);
+  min-height: 100vh;
+} 
+
+.teal-hero {
+  background: rgba(255, 255, 255, 0.9);
+  background-size: cover;
+  background-position: center;
+  color: var(--text-main);
 } 

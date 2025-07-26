@@ -1,15 +1,24 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useState, useEffect, useRef } from 'react';
+import './Navbar.css';
 
-export default function Navbar() {
-  const { currentUser, logout } = useAuth();
+// Debug: Log when Navbar is rendered
+console.log('Navbar component is rendering');
+
+const NewNavbar = () => {
+  const { currentUser, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const menuButtonRef = useRef(null);
   const menuRef = useRef(null);
+  
+  // Debug: Log auth state changes
+  useEffect(() => {
+    console.log('Navbar - Auth state updated:', { isAuthenticated, currentUser });
+  }, [isAuthenticated, currentUser]);
   
   // Close mobile menu when route changes
   useEffect(() => {
@@ -81,50 +90,34 @@ export default function Navbar() {
     }
   };
 
+  // Navigation items configuration
   const navItems = [
+    // Always show
     { to: "/", label: "Home", isActive: location.pathname === '/' },
-    { to: "/dashboard", label: "Dashboard", isActive: location.pathname === '/dashboard', show: !!currentUser },
-    { to: "/tracking", label: "Job Tracking", isActive: location.pathname.startsWith('/tracking'), show: !!currentUser },
-    { to: "/profile", label: "My Profile", isActive: location.pathname === '/profile', show: !!currentUser },
-    { to: "/auth", label: "Log In", isActive: location.pathname === '/auth', show: !currentUser },
-    { to: "/signup", label: "Sign Up", isActive: location.pathname === '/signup', show: !currentUser },
-  ].filter(item => item.show !== false);
-
-  // Check if mobile view
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  
-  // Update mobile state on window resize
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
     
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Close mobile menu when pressing Escape key
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isMobileMenuOpen]);
+    // Protected routes - only show when authenticated
+    { to: "/dashboard", label: "Dashboard", isActive: location.pathname === '/dashboard', show: isAuthenticated },
+    { to: "/job-matcher", label: "Job Matcher", isActive: location.pathname.startsWith('/job-matcher'), show: isAuthenticated },
+    { to: "/resume-scan", label: "Resume Scan", isActive: location.pathname.startsWith('/resume-scan'), show: isAuthenticated },
+    { to: "/resume-optimizer", label: "Resume Optimizer", isActive: location.pathname.startsWith('/resume-optimizer'), show: isAuthenticated },
+    { to: "/scanner", label: "Document Scanner", isActive: location.pathname.startsWith('/scanner'), show: isAuthenticated },
+    { to: "/tracking", label: "Job Tracking", isActive: location.pathname.startsWith('/tracking'), show: isAuthenticated },
+    { to: "/profile", label: "My Profile", isActive: location.pathname === '/profile', show: isAuthenticated },
+    
+    // Auth routes - only show when not authenticated
+    { to: "/login", label: "Log In", isActive: location.pathname === '/login', show: !isAuthenticated }
+  ].filter(item => item.show !== false);
 
   return (
     <nav 
-      className={`js-navbar ${isScrolled ? 'scrolled' : ''}`}
+      className={`navbar ${isScrolled ? 'scrolled' : ''}`}
       aria-label="Main navigation"
     >
-      <div className="js-nav-container">
+      <div className="nav-container">
         {/* Logo */}
         <Link 
           to="/" 
-          className="js-nav-logo"
+          className="nav-logo"
           aria-label="ResumeScan - Home"
           onClick={() => window.scrollTo(0, 0)}
         >
@@ -149,7 +142,7 @@ export default function Navbar() {
         </button>
 
         {/* Desktop Navigation */}
-        <ul className="js-nav-menu desktop-nav" role="menubar">
+        <ul className="desktop-nav" role="menubar">
           {navItems.map((item) => (
             <li key={item.to} role="none">
               <Link
@@ -179,7 +172,10 @@ export default function Navbar() {
         {/* Mobile Menu Overlay */}
         <div 
           className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}
-          onClick={() => setIsMobileMenuOpen(false)}
+          onClick={() => {
+            setIsMobileMenuOpen(false);
+            menuButtonRef.current?.focus();
+          }}
           role="dialog"
           aria-modal="true"
           aria-hidden={!isMobileMenuOpen}
@@ -198,67 +194,56 @@ export default function Navbar() {
               }}
               aria-label="Close menu"
             >
-              Log Out
+              &times;
             </button>
-          </li>
-        )}
-      </ul>
-
-      {/* Mobile Menu Overlay */}
-      <div 
-        className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}
-        onClick={() => setIsMobileMenuOpen(false)}
-        role="dialog"
-        aria-modal="true"
-        aria-hidden={!isMobileMenuOpen}
-      >
-        <div 
-          ref={menuRef}
-          className="mobile-menu-container" 
-          onClick={e => e.stopPropagation()}
-          role="document"
-        >
-          <button 
-            className="mobile-close-button"
-            onClick={() => {
-              setIsMobileMenuOpen(false);
-              menuButtonRef.current?.focus();
-            }}
-            aria-label="Close menu"
-          >
-            &times;
-          </button>
-          <nav aria-label="Mobile menu">
-            <ul className="mobile-nav" role="menu">
-              {navItems.map((item) => (
-                <li key={item.to} role="none">
-                  <Link
-                    to={item.to}
-                    className={`mobile-nav-link ${item.isActive ? 'active' : ''}`}
-                    role="menuitem"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    aria-current={item.isActive ? 'page' : undefined}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-              {currentUser && (
-                <li className="mobile-cta" role="none">
-                  <button 
-                    onClick={handleLogout} 
-                    className="mobile-nav-link"
-                    role="menuitem"
-                  >
-                    Log Out
-                  </button>
-                </li>
-              )}
-              {!currentUser && (
+            <nav aria-label="Mobile menu">
+              <ul 
+                id="mobile-menu" 
+                className="mobile-nav" 
+                role="menu" 
+                aria-orientation="vertical"
+                aria-labelledby="mobile-menu"
+              >
+                {navItems.map((item) => (
+                  <li key={`mobile-${item.to}`} role="none">
+                    <Link
+                      to={item.to}
+                      className={`mobile-nav-link ${item.isActive ? 'active' : ''}`}
+                      role="menuitem"
+                      tabIndex={isMobileMenuOpen ? 0 : -1}
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          setIsMobileMenuOpen(false);
+                        }
+                      }}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+                
+                {isAuthenticated && (
+                  <li role="none">
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="mobile-nav-link w-full text-left"
+                      role="menuitem"
+                      tabIndex={isMobileMenuOpen ? 0 : -1}
+                    >
+                      Log Out
+                    </button>
+                  </li>
+                )}
                 <li className="mobile-cta" role="none">
                   <Link 
-                    to="/signup" 
-                    className="mobile-nav-cta"
+                    to="/scan" 
+                    className="nav-cta"
                     role="menuitem"
                     tabIndex={isMobileMenuOpen ? 0 : -1}
                   >
@@ -268,7 +253,10 @@ export default function Navbar() {
               </ul>
             </nav>
           </div>
+        </div>
       </div>
     </nav>
   );
-}
+};
+
+export default NewNavbar;

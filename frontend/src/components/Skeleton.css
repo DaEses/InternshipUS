@@ -1,0 +1,88 @@
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #e2e8f0;
+}
+
+.skeleton-title {
+  margin-bottom: 0.75rem;
+  max-width: 200px;
+}
+
+.skeleton-subtitle {
+  margin-bottom: 0.5rem;
+  max-width: 150px;
+}
+
+.skeleton-text {
+  margin-top: 0.5rem;
+  height: 0.875rem;
+  width: 100%;
+}
+
+/* Job tracking specific skeleton */
+.skeleton-job-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #e2e8f0;
+}
+
+.skeleton-job-card .skeleton-title {
+  height: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-job-card .skeleton-subtitle {
+  height: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-job-card .skeleton-meta {
+  height: 0.875rem;
+  width: 60%;
+  margin-top: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .skeleton-card,
+  .skeleton-job-card {
+    padding: 0.75rem;
+  }
+  
+  .skeleton-title {
+    height: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .skeleton-subtitle {
+    height: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .skeleton-text,
+  .skeleton-meta {
+    height: 0.75rem;
+  }
+}

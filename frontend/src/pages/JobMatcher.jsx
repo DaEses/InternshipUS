@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import OptimizedImage from '../components/OptimizedImage';
 import '../Home.css';
 
 const fadeInUp = {
@@ -142,7 +143,12 @@ export default function JobMatcher() {
           <motion.p variants={fadeInUp} custom={2}>See jobs that match your activated dream job and how well your resume fits each one.</motion.p>
         </motion.div>
         <motion.div className="teal-hero-image" variants={fadeInUp} custom={2}>
-          <img src="https://placehold.co/400x260?text=Job+Matcher" alt="Job Matcher" />
+          <OptimizedImage 
+            src="/images/job-matcher-hero.jpg" 
+            alt="Job matching and career opportunities" 
+            className="hero-image"
+            loading="eager" // Eager load hero images
+          />
         </motion.div>
       </motion.section>
       <div className="js-job-match-container" style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1rem' }}>
@@ -159,21 +165,95 @@ export default function JobMatcher() {
             No active dream job set. Go to your profile and add/activate a dream job to use this feature.
           </div>
         ) : (
-          <div className="js-jobs-grid">
+          <div className="js-jobs-grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: '1.5rem',
+            width: '100%',
+            padding: '0 1rem',
+            margin: '0 auto',
+            maxWidth: '1200px'
+          }}>
             {JOBS.map(job => {
               const bestResume = getBestResume(job);
               const matchRate = getMatchRate(job, bestResume);
               return (
-                <motion.div key={job.id} className="js-job-card teal-feature-card" variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={job.id}>
-                  <div className="js-job-title" style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: 4 }}>{job.title}</div>
-                  <div className="js-job-company" style={{ color: '#319795', fontWeight: 600 }}>{job.company}</div>
-                  <div className="js-job-location" style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: 8 }}>{job.location} • {job.type}</div>
-                  <div style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: 8 }}>{job.description}</div>
-                  <div style={{ marginBottom: 8, display: 'flex', flexWrap: 'wrap', gap: 6 }}><b>Required Tools:</b> {job.tools.map(tool => <span key={tool} className="js-job-tag" style={{ marginRight: 6, marginBottom: 6 }}>{tool}</span>)}</div>
-                  <div className="js-job-match-score" style={{ marginBottom: 8 }}>
-                    <span className="js-match-percentage" style={{ fontWeight: 700, color: matchRate > 70 ? '#38b2ac' : '#e53e3e' }}>{matchRate}% Match</span>
+                <motion.div 
+                  key={job.id} 
+                  className="js-job-card teal-feature-card" 
+                  variants={fadeInUp} 
+                  initial="hidden" 
+                  whileInView="visible" 
+                  viewport={{ once: true }} 
+                  custom={job.id}
+                  style={{ 
+                    width: '100%',
+                    maxWidth: '350px',
+                    margin: '0 auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                    minHeight: '320px',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <div>
+                    <div className="js-job-title" style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: '0.5rem', color: '#2d3748' }}>{job.title}</div>
+                    <div className="js-job-company" style={{ color: '#319795', fontWeight: 600, marginBottom: '0.5rem' }}>{job.company}</div>
+                    <div className="js-job-location" style={{ color: '#4a5568', fontSize: '0.95rem', marginBottom: '1rem' }}>{job.location} • {job.type}</div>
+                    <div style={{ color: '#4a5568', fontSize: '0.95rem', marginBottom: '1rem', minHeight: '60px' }}>{job.description}</div>
+                    <div style={{ marginBottom: '1rem' }}>
+                      <div style={{ marginBottom: '0.5rem', color: '#2d3748' }}><b>Required Tools:</b></div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {job.tools.map(tool => (
+                          <span 
+                            key={tool} 
+                            className="js-job-tag" 
+                            style={{
+                              backgroundColor: '#edf2f7',
+                              color: '#2d3748',
+                              padding: '0.25rem 0.75rem',
+                              borderRadius: '9999px',
+                              fontSize: '0.85rem',
+                              fontWeight: 500,
+                              border: '1px solid #e2e8f0'
+                            }}
+                          >
+                            {tool}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  {bestResume && <div style={{ color: '#2563eb', fontSize: '0.95rem' }}><b>Best Resume:</b> {bestResume.name}</div>}
+                  <div>
+                    <div className="js-job-match-score" style={{ marginBottom: '0.75rem' }}>
+                      <span 
+                        className="js-match-percentage" 
+                        style={{ 
+                          display: 'inline-block',
+                          padding: '0.5rem 1rem',
+                          borderRadius: '9999px',
+                          fontWeight: 700, 
+                          color: 'white',
+                          backgroundColor: matchRate > 70 ? '#38b2ac' : '#e53e3e',
+                          fontSize: '0.95rem'
+                        }}
+                      >
+                        {matchRate}% Match
+                      </span>
+                    </div>
+                    {bestResume && (
+                      <div style={{ 
+                        color: '#2563eb', 
+                        fontSize: '0.9rem',
+                        padding: '0.5rem 0',
+                        borderTop: '1px solid #e2e8f0',
+                        marginTop: '0.5rem'
+                      }}>
+                        <b>Best Resume:</b> {bestResume.name}
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
               );
             })}

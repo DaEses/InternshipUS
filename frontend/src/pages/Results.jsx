@@ -60,7 +60,7 @@ export default function Results() {
               <li key={index} style={{ 
                 padding: '0.75rem 0', 
                 borderBottom: index < results.suggestions.length - 1 ? '1px solid #e2e8f0' : 'none',
-                color: '#64748b'
+                color: '#ffffff'
               }}>
                 • {suggestion}
               </li>
